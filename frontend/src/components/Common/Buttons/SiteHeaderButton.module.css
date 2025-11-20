@@ -62,6 +62,13 @@
   background: color-mix(in hsl, #000, var(--primary) 90%);
 }
 
+.primary:disabled {
+  background: #c0c0c0;
+  border-color: #a0a0a0;
+  color: white;
+  text-shadow: none;
+}
+
 .disabled {
   color: var(--contrast-20);
   cursor: not-allowed;

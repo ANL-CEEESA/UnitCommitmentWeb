@@ -4,7 +4,7 @@
  * Released under the GNU Affero General Public License v3.0 or later.
  */
 
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import Footer from "../Common/Footer";
@@ -41,6 +41,7 @@ const SOLUTION_TABLES = [
 
 const Jobs = () => {
   const { jobId } = useParams();
+  const navigate = useNavigate();
   const [jobData, setJobData] = useState<JobData | null>(null);
   const [selectedTable, setSelectedTable] = useState<string>(SOLUTION_TABLES[0]!);
   const logRef = useRef<HTMLDivElement>(null);
@@ -97,9 +98,16 @@ const Jobs = () => {
     }
   }, [jobData?.log]);
 
+  const onEdit = () => {
+    if (jobData?.input) {
+      localStorage.setItem("scenario", jobData.input);
+      navigate("/");
+    }
+  };
+
   return (
     <div>
-      <Header />
+      <Header onEdit={onEdit} canEdit={!!jobData?.input} />
       <div className="content">
         <SectionHeader title="Optimization log" />
         <div className={formStyles.FormWrapper}>

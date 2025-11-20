@@ -5,13 +5,27 @@
  */
 
 import styles from "../Common/Header.module.css";
+import SiteHeaderButton from "../Common/Buttons/SiteHeaderButton";
 
-function Header() {
+interface HeaderProps {
+  onEdit: () => void;
+  canEdit: boolean;
+}
+
+function Header(props: HeaderProps) {
   return (
     <div className={styles.HeaderBox}>
       <div className={styles.HeaderContent}>
         <h1>UnitCommitment.jl</h1>
         <h2>Solver</h2>
+        <div className={styles.buttonContainer}>
+          <SiteHeaderButton
+            title="Edit"
+            variant="primary"
+            onClick={props.onEdit}
+            disabled={!props.canEdit}
+          />
+        </div>
       </div>
     </div>
   );

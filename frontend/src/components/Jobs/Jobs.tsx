@@ -109,20 +109,22 @@ const Jobs = () => {
               : "Loading..."}
           </div>
         </div>
-        <div className={styles.SolutionHeader}>
-          <select
-            id="table-select"
-            value={selectedTable}
-            onChange={(e) => setSelectedTable(e.target.value)}
-            className={styles.SolutionHeaderSelect}
-          >
-            {SOLUTION_TABLES.map((key) => (
-              <option key={key} value={key}>
-                {key}
-              </option>
-            ))}
-          </select>
-        </div>
+        {jobData?.solution && (
+          <div className={styles.SolutionHeader}>
+            <select
+              id="table-select"
+              value={selectedTable}
+              onChange={(e) => setSelectedTable(e.target.value)}
+              className={styles.SolutionHeaderSelect}
+            >
+              {SOLUTION_TABLES.map((key) => (
+                <option key={key} value={key}>
+                  {key}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <SolutionTable
           solutionKey={selectedTable}
           jobData={jobData}

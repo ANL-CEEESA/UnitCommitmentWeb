@@ -86,6 +86,7 @@ const SolutionTable = ({
         onRowDeleted={() => null}
         onRowRenamed={() => null}
         onDataChanged={() => null}
+        readOnly={true}
       />
     </div>
   );

@@ -359,6 +359,7 @@ interface DataTableProps {
     newValue: string,
   ) => ValidationError | null;
   generateData: () => [any[], ColumnDefinition[]];
+  readOnly?: boolean;
 }
 
 function computeTableHeight(data: any[]): string {
@@ -407,6 +408,21 @@ const DataTable = (props: DataTableProps) => {
     };
     if (tableContainerRef.current === null) return;
     const [data, columns] = props.generateData();
+
+    // Remove editors from columns if readOnly
+    if (props.readOnly) {
+      const removeEditors = (cols: ColumnDefinition[]) => {
+        cols.forEach(col => {
+          if (col.columns) {
+            removeEditors(col.columns);
+          } else {
+            delete col.editor;
+            delete col.editorParams;
+          }
+        });
+      };
+      removeEditors(columns);
+    }
     const height = computeTableHeight(data);
 
     if (tableRef.current === null) {
@@ -456,7 +472,7 @@ const DataTable = (props: DataTableProps) => {
       setCurrentTableData(newTableData);
 
       // Restore active cell selection
-      if (activeCell) {
+      if (activeCell && !props.readOnly) {
         tableRef.current
           ?.getRowFromPosition(activeRowPosition!!)
           ?.getCell(activeField!!)
@@ -487,7 +503,9 @@ const DataTable = (props: DataTableProps) => {
           const rows = tableRef.current!.getRows()!;
           const lastRow = rows[rows.length - 1]!;
           lastRow.scrollTo().then((r) => {});
-          lastRow.getCell("Name").edit();
+          if (!props.readOnly) {
+            lastRow.getCell("Name").edit();
+          }
         }, 10);
       }
 
@@ -497,23 +515,25 @@ const DataTable = (props: DataTableProps) => {
       tableRef.current.off("cellEditCancelled");
 
       // Set new callbacks
-      tableRef.current.on("cellEditing", (cell) => {
-        setActiveCell(cell);
-      });
+      if (!props.readOnly) {
+        tableRef.current.on("cellEditing", (cell) => {
+          setActiveCell(cell);
+        });
 
-      tableRef.current.on("cellEditCancelled", (cell) => {
-        setActiveCell(null);
-      });
+        tableRef.current.on("cellEditCancelled", (cell) => {
+          setActiveCell(null);
+        });
 
-      tableRef.current.on("cellEdited", (cell) => {
-        setActiveCell(null);
-        onCellEdited(cell);
-      });
+        tableRef.current.on("cellEdited", (cell) => {
+          setActiveCell(null);
+          onCellEdited(cell);
+        });
+      }
     }
   }, [props, isTableBuilt]);
 
   return (
-    <div className="tableWrapper">
+    <div className={`tableWrapper ${props.readOnly ? 'readOnly' : ''}`}>
       <div ref={tableContainerRef} />
     </div>
   );

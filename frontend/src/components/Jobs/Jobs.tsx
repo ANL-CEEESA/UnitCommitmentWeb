@@ -9,9 +9,12 @@ import { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import Footer from "../Common/Footer";
 import SectionHeader from "../Common/SectionHeader/SectionHeader";
+import SectionButton from "../Common/Buttons/SectionButton";
 import styles from "./Jobs.module.css";
 import formStyles from "../Common/Forms/Form.module.css";
-import SolutionTable from "./SolutionTable";
+import SolutionTable, { downloadSolutionTable } from "./SolutionTable";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { offerDownload } from "../Common/io";
 
 interface JobData {
   log: string;
@@ -105,9 +108,28 @@ const Jobs = () => {
     }
   };
 
+  const onDownloadSolution = () => {
+    if (!jobData?.solution) {
+      return;
+    }
+    const jsonContents = JSON.stringify(jobData.solution, null, 2);
+    offerDownload(jsonContents, "application/json", "solution.json");
+  };
+
+  const onDownloadTable = () => {
+    if (!jobData?.solution || !jobData.input) {
+      return;
+    }
+    downloadSolutionTable(selectedTable, jobData.solution, jobData.input);
+  };
+
   return (
     <div>
-      <Header onEdit={onEdit} canEdit={!!jobData?.input} />
+      <Header
+        onEdit={onEdit}
+        onDownload={onDownloadSolution}
+        disabled={!jobData?.solution}
+      />
       <div className="content">
         <SectionHeader title="Optimization log" />
         <div className={formStyles.FormWrapper}>
@@ -131,6 +153,11 @@ const Jobs = () => {
                 </option>
               ))}
             </select>
+            <SectionButton
+              icon={faDownload}
+              tooltip="Download"
+              onClick={onDownloadTable}
+            />
           </div>
         )}
         <SolutionTable

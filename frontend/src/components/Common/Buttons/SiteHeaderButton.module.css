@@ -63,8 +63,8 @@
 }
 
 .primary:disabled {
-  background: #c0c0c0;
-  border-color: #a0a0a0;
+  background: var(--contrast-20);
+  border: var(--box-border);
   color: white;
   text-shadow: none;
 }

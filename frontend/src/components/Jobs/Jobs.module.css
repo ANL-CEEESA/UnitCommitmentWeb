@@ -24,7 +24,13 @@
   min-width: var(--site-min-width);
   margin: 0 auto;
   color: var(--contrast-100);
-  padding: 12px 0 12px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.SolutionHeader button {
+  margin-right: 12px;
 }
 
 .SolutionHeaderSelect {
@@ -34,7 +40,7 @@
   color: var(--contrast-100);
   font-weight: bold;
   cursor: pointer;
-  padding: 10px;
+  margin-left: 24px;
 }
 
 .SolutionHeaderSelect:hover {

@@ -6,10 +6,12 @@
 
 import styles from "../Common/Header.module.css";
 import SiteHeaderButton from "../Common/Buttons/SiteHeaderButton";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
 
 interface HeaderProps {
   onEdit: () => void;
-  canEdit: boolean;
+  onDownload: () => void;
+  disabled: boolean;
 }
 
 function Header(props: HeaderProps) {
@@ -20,10 +22,16 @@ function Header(props: HeaderProps) {
         <h2>Solver</h2>
         <div className={styles.buttonContainer}>
           <SiteHeaderButton
+            title="Download"
+            icon={faDownload}
+            onClick={props.onDownload}
+            disabled={props.disabled}
+          />
+          <SiteHeaderButton
             title="Edit"
             variant="primary"
             onClick={props.onEdit}
-            disabled={!props.canEdit}
+            disabled={props.disabled}
           />
         </div>
       </div>

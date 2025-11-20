@@ -3,10 +3,10 @@
 # Released under the GNU Affero General Public License v3.0 or later.
 
 using HTTP
-using Random
 using JSON
 using CodecZlib
 using UnitCommitment
+using MD5
 
 struct ServerHandle
     server::HTTP.Server
@@ -27,9 +27,8 @@ function submit(req, processor::JobProcessor)
     end
 
     # Validate compressed JSON by decompressing and parsing
-    try
-        decompressed_data = transcode(GzipDecompressor, compressed_body)
-        JSON.parse(String(decompressed_data))
+    decompressed_data = try
+        transcode(GzipDecompressor, compressed_body)
     catch e
         return HTTP.Response(
             400,
@@ -38,11 +37,17 @@ function submit(req, processor::JobProcessor)
         )
     end
 
-    # Generate random job ID (lowercase letters and numbers)
-    job_id = randstring(['a':'z'; '0':'9'], 16)
+    # Generate job ID from MD5 hash of decompressed data
+    job_id = bytes2hex(md5(decompressed_data))
+
+    # Check if job already exists
+    job_dir = joinpath(basedir, "jobs", job_id)
+    if isdir(job_dir)
+        response_body = JSON.json(Dict("job_id" => job_id))
+        return HTTP.Response(200, RESPONSE_HEADERS, response_body)
+    end
 
     # Create job directory
-    job_dir = joinpath(basedir, "jobs", job_id)
     mkpath(job_dir)
 
     # Save input file
@@ -107,8 +112,6 @@ function jobs_view(req, processor)
 end
 
 function start_server(host, port; optimizer)
-    Random.seed!()
-
     function work_fn(job_id)
         job_dir = joinpath(basedir, "jobs", job_id)
         mkpath(job_dir)

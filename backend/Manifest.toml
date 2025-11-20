@@ -19,7 +19,7 @@ uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 version = "1.11.0"
 
 [[deps.Backend]]
-deps = ["CodecZlib", "Dates", "Distributed", "HTTP", "JSON", "Logging", "Printf", "Random", "UnitCommitment"]
+deps = ["CodecZlib", "Dates", "Distributed", "HTTP", "HiGHS", "JSON", "JuMP", "Logging", "Printf", "Random", "UnitCommitment"]
 path = "."
 uuid = "948642ed-e3f9-4642-9296-0f1eaf40c938"
 version = "0.1.0"
@@ -758,7 +758,7 @@ version = "1.11.0"
 
 [[deps.UnitCommitment]]
 deps = ["DataStructures", "Distributed", "Distributions", "GZip", "JSON", "JuMP", "LinearAlgebra", "Logging", "MPI", "MathOptInterface", "PackageCompiler", "Printf", "Random", "SparseArrays", "TimerOutputs"]
-path = "../.."
+path = "../../../UnitCommitment.jl/dev"
 uuid = "64606440-39ea-11e9-0f29-3303a1d3d877"
 version = "0.4.1"
 

@@ -11,16 +11,38 @@ import Footer from "../Common/Footer";
 import SectionHeader from "../Common/SectionHeader/SectionHeader";
 import styles from "./Jobs.module.css";
 import formStyles from "../Common/Forms/Form.module.css";
+import SolutionTable from "./SolutionTable";
 
 interface JobData {
   log: string;
   solution: any;
+  input: any;
   position: number;
 }
+
+const SOLUTION_TABLES = [
+  "Is on",
+  "Thermal production (MW)",
+  "Startup cost ($)",
+  "Thermal production cost ($)",
+  "Profiled production (MW)",
+  "Profiled production cost ($)",
+  "Net injection (MW)",
+  "Load curtail (MW)",
+  "Line overflow (MW)",
+  "Price-sensitive loads (MW)",
+  "Storage level (MWh)",
+  "Storage charging rates (MW)",
+  "Storage charging cost ($)",
+  "Storage discharging rates (MW)",
+  "Storage discharging cost ($)",
+  "Spinning reserve shortfall (MW)",
+];
 
 const Jobs = () => {
   const { jobId } = useParams();
   const [jobData, setJobData] = useState<JobData | null>(null);
+  const [selectedTable, setSelectedTable] = useState<string>(SOLUTION_TABLES[0]!);
   const logRef = useRef<HTMLDivElement>(null);
   const previousLogRef = useRef<string>("");
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -79,7 +101,7 @@ const Jobs = () => {
     <div>
       <Header />
       <div className="content">
-        <SectionHeader title="Optimization log"></SectionHeader>
+        <SectionHeader title="Optimization log" />
         <div className={formStyles.FormWrapper}>
           <div className={styles.SolverLog} ref={logRef}>
             {jobData
@@ -87,6 +109,24 @@ const Jobs = () => {
               : "Loading..."}
           </div>
         </div>
+        <div className={styles.SolutionHeader}>
+          <select
+            id="table-select"
+            value={selectedTable}
+            onChange={(e) => setSelectedTable(e.target.value)}
+            className={styles.SolutionHeaderSelect}
+          >
+            {SOLUTION_TABLES.map((key) => (
+              <option key={key} value={key}>
+                {key}
+              </option>
+            ))}
+          </select>
+        </div>
+        <SolutionTable
+          solutionKey={selectedTable}
+          jobData={jobData}
+        />
       </div>
       <Footer />
     </div>

@@ -78,6 +78,17 @@ function jobs_view(req, processor)
     output_path = joinpath(job_dir, "output.json")
     output_content = isfile(output_path) ? read(output_path, String) : nothing
 
+    # Read and decompress input.json.gz if solution exists
+    input_content = nothing
+    if output_content !== nothing
+        input_path = joinpath(job_dir, "input.json.gz")
+        if isfile(input_path)
+            compressed_input = read(input_path)
+            decompressed_input = transcode(GzipDecompressor, compressed_input)
+            input_content = String(decompressed_input)
+        end
+    end
+
     # Read job status
     job_status = "unknown"
     if output_content !== nothing
@@ -90,7 +101,7 @@ function jobs_view(req, processor)
     job_position = get(processor.job_position, job_id, 0)
 
     # Create response JSON
-    response_data = Dict("log" => log_content, "solution" => output_content, "status" => job_status, "position" => job_position)
+    response_data = Dict("log" => log_content, "solution" => output_content, "input" => input_content, "status" => job_status, "position" => job_position)
     response_body = JSON.json(response_data)
     return HTTP.Response(200, RESPONSE_HEADERS, response_body)
 end

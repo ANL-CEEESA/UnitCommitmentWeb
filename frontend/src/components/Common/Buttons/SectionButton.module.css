@@ -1,0 +1,26 @@
+/*
+ * UnitCommitmentWeb: Web Interface for UnitCommitment.jl
+ * Copyright (C) 2025, UChicago Argonne, LLC. All rights reserved.
+ * Released under the GNU Affero General Public License v3.0 or later.
+ */
+
+.SectionButton {
+  height: 48px;
+  width: 48px;
+  font-size: 14px;
+  border: 0;
+  background-color: transparent;
+  margin: 8px 0 8px 0px;
+  cursor: pointer;
+  color: var(--contrast-80);
+}
+
+.SectionButton:hover {
+  color: var(--contrast-100);
+  background-color: var(--contrast-20);
+  border-radius: var(--border-radius);
+}
+
+.SectionButton:active {
+  background-color: var(--contrast-80);
+}

@@ -1,0 +1,25 @@
+/*
+ * UnitCommitmentWeb: Web Interface for UnitCommitment.jl
+ * Copyright (C) 2025, UChicago Argonne, LLC. All rights reserved.
+ * Released under the GNU Affero General Public License v3.0 or later.
+ */
+
+.SectionHeader {
+  max-width: var(--site-max-width);
+  min-width: var(--site-min-width);
+  margin: 0 auto;
+  color: var(--contrast-100);
+}
+
+.SectionHeader h1 {
+  margin: 0;
+  padding: 0 24px;
+  font-size: 16px;
+  line-height: 64px;
+}
+
+.SectionButtonsContainer {
+  float: right;
+  height: 64px;
+  margin-right: 12px;
+}

@@ -1,0 +1,23 @@
+/*
+ * UnitCommitmentWeb: Web Interface for UnitCommitment.jl
+ * Copyright (C) 2025, UChicago Argonne, LLC. All rights reserved.
+ * Released under the GNU Affero General Public License v3.0 or later.
+ */
+
+.Toast {
+    width: 600px;
+    border-radius: var(--border-radius);
+    box-shadow: 4px 4px 16px -2px rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+    background-color: #424242;
+    color: white;
+    padding: 0 16px;
+    position: fixed;
+    top: 48px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    transition: opacity 0.5s ease;
+    cursor: default;
+    font-size: 15px;
+    line-height: 48px;
+}

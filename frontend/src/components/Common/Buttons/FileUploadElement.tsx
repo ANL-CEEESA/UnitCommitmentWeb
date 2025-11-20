@@ -1,0 +1,58 @@
+/*
+ * UnitCommitmentWeb: Web Interface for UnitCommitment.jl
+ * Copyright (C) 2025, UChicago Argonne, LLC. All rights reserved.
+ * Released under the GNU Affero General Public License v3.0 or later.
+ */
+
+import pako from "pako";
+import React, { Component } from "react";
+
+class FileUploadElement extends Component<any> {
+  private inputRef = React.createRef<HTMLInputElement>();
+  private callback: (data: any) => void = () => {};
+
+  showFilePicker = (callback: (data: any) => void) => {
+    this.callback = callback;
+    this.inputRef.current?.click();
+  };
+
+  onFileSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files![0]!;
+    let isCompressed = file.name.endsWith(".gz");
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        let content = e.target?.result;
+
+        if (isCompressed) {
+          const compressed = new Uint8Array(content as ArrayBuffer);
+          const decompressed = pako.inflate(compressed);
+          content = new TextDecoder().decode(decompressed);
+        }
+
+        this.callback(content as string);
+        this.callback = () => {};
+      };
+      if (isCompressed) {
+        reader.readAsArrayBuffer(file);
+      } else {
+        reader.readAsText(file);
+      }
+    }
+    event.target.value = "";
+  };
+
+  override render() {
+    return (
+      <input
+        ref={this.inputRef}
+        type="file"
+        accept={this.props.accept}
+        style={{ display: "none" }}
+        onChange={this.onFileSelected}
+      />
+    );
+  }
+}
+
+export default FileUploadElement;

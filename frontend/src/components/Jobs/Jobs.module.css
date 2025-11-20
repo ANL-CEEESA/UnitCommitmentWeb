@@ -1,0 +1,19 @@
+/*
+ * UnitCommitmentWeb: Web Interface for UnitCommitment.jl
+ * Copyright (C) 2025, UChicago Argonne, LLC. All rights reserved.
+ * Released under the GNU Affero General Public License v3.0 or later.
+ */
+
+.SolverLog {
+  white-space: preserve;
+  font-family: monospace;
+  padding: 12px;
+  background-color: var(--contrast-0);
+  color: var(--contrast-100);
+  border: var(--box-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  height: 40em;
+  overflow: auto;
+  scrollbar-width: none;
+}

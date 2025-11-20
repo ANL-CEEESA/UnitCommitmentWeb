@@ -1,0 +1,46 @@
+/*
+ * UnitCommitmentWeb: Web Interface for UnitCommitment.jl
+ * Copyright (C) 2025, UChicago Argonne, LLC. All rights reserved.
+ * Released under the GNU Affero General Public License v3.0 or later.
+ */
+
+.FormWrapper {
+    margin: 0 auto;
+    max-width: var(--site-max-width);
+}
+
+.Form {
+  background-color: var(--contrast-0);
+  border: var(--box-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  min-height: 48px;
+    margin: 0 12px;
+  min-width: var(--site-min-width);
+  max-height: 500px;
+  padding: 12px;
+}
+
+.FormRow {
+  display: flex;
+  line-height: 24px;
+}
+
+.FormRow label {
+  width: 350px;
+  padding: 6px 12px;
+  text-align: right;
+}
+
+.FormRow input {
+  flex: 1;
+  font-family: monospace;
+  border: var(--box-border);
+  border-radius: var(--border-radius);
+  padding: 4px;
+  margin: 2px 3px;
+}
+
+.FormRow_unit {
+  color: rgba(0, 0, 0, 0.4);
+}
